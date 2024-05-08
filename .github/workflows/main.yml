@@ -1,0 +1,39 @@
+name: Update Vulnerabilities JSON
+
+on:
+  schedule:
+    # 每分钟自动触发任务
+    - cron: '* * * * *'
+  workflow_dispatch: # 添加workflow_dispatch触发器
+
+jobs:
+  update_json:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4  # 更新为最新版本的 actions/checkout
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # 使用 Python 3.x 版本
+
+      - name: Download JSON with Python
+        run: |
+          python3 -m pip install wget
+          python3 -c "import wget; wget.download('https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json', 'known_exploited_vulnerabilities.json')"
+          
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Update known exploited vulnerabilities JSON"
+          git push --force --quiet --set-upstream origin ${{ github.ref }}
+
+      - name: Remove downloaded JSON file
+        run: |
+          rm known_exploited_vulnerabilities.json
