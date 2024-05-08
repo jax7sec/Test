@@ -3,7 +3,7 @@ name: Update Vulnerabilities JSON
 on:
   schedule:
     # 每分钟自动触发任务
-    - cron: '0 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch: # 添加workflow_dispatch触发器
 
 jobs:
