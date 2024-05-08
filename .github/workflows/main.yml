@@ -16,6 +16,10 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
+      - name: Remove old JSON files
+        run: |
+          rm -f *.json
+
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -35,7 +39,3 @@ jobs:
           git push --force --quiet --set-upstream origin ${{ github.ref }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          
-      - name: Remove downloaded JSON file
-        run: |
-          rm known_exploited_vulnerabilities.json
