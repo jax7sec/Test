@@ -33,7 +33,9 @@ jobs:
           git add .
           git commit -m "Update known exploited vulnerabilities JSON"
           git push --force --quiet --set-upstream origin ${{ github.ref }}
-
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          
       - name: Remove downloaded JSON file
         run: |
           rm known_exploited_vulnerabilities.json
