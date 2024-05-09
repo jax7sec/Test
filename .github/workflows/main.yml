@@ -19,7 +19,11 @@ jobs:
       - name: Remove old JSON files
         run: |
           rm -f *.json
+          rm -f README.md
 
+      - name: Create README file
+        run: echo "This workflow has been executed ${{ github.run_number }} times." > README.md
+        
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
